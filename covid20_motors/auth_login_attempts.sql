@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS auth_login_attempts (
+    attempt_key CHAR(64) NOT NULL PRIMARY KEY,
+    failed_attempts SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+    window_started_at BIGINT UNSIGNED NOT NULL,
+    locked_until BIGINT UNSIGNED NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_auth_login_updated (updated_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

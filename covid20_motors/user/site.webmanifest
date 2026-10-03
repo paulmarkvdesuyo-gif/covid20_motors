@@ -1,0 +1,25 @@
+{
+  "id": "./index.html",
+  "name": "Co_vid 20's Motor Parts",
+  "short_name": "Co_vid Motors",
+  "description": "Shop motorcycle parts and accessories from Co_vid 20's Motors.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f0f2f5",
+  "theme_color": "#c65a0a",
+  "icons": [
+    {
+      "src": "./app-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./app-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

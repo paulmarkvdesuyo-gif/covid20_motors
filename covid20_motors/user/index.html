@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Co_vid 20's Motor Parts</title>
+    <meta name="theme-color" content="#c65a0a">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        /* ============================================
+           LOGIN PAGE WITH COVID.JPG BACKGROUND
+           ============================================ */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            position: relative;
+        }
+
+        /* Shared background image from the project root */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('../covid.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+            opacity: 0.9;
+        }
+
+        /* Fallback if image doesn't load - show gradient */
+        body.no-image::before {
+            background-image: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            opacity: 1;
+        }
+
+        /* Dark overlay */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 30px;
+            padding: 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            animation: fadeInUp 0.6s ease-out;
+            border: 1px solid rgba(255,255,255,0.15);
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo-icon {
+            font-size: 60px;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .logo-section h1 {
+            font-size: 28px;
+            color: #2c3e50;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        .logo-section h1 .brand-name {
+            color: #e67e22;
+        }
+        .logo-section p {
+            color: #7f8c8d;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .auth-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f2f5;
+            position: relative;
+        }
+        .auth-tab {
+            flex: 1;
+            padding: 12px 10px 14px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .auth-tab.active {
+            color: #e67e22;
+        }
+        .auth-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #e67e22;
+            border-radius: 3px;
+        }
+        .auth-tab:hover {
+            color: #e67e22;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+        .input-group label .required {
+            color: #e74c3c;
+        }
+        .input-group input,
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.9);
+        }
+        .input-group input:focus,
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #e67e22;
+            box-shadow: 0 0 0 4px rgba(230,126,34,0.1);
+            background: white;
+        }
+        .input-group textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+        .input-group small {
+            display: block;
+            margin-top: 4px;
+            color: #7f8c8d;
+            font-size: 11px;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+        .auth-btn:hover {
+            background: linear-gradient(135deg, #d35400, #bf4a00);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(230,126,34,0.4);
+        }
+        .auth-btn:active {
+            transform: translateY(0);
+        }
+        .auth-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .error-msg {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            text-align: center;
+            border-left: 4px solid #e74c3c;
+        }
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            text-align: center;
+            border-left: 4px solid #27ae60;
+        }
+
+        /* Removed .demo-accounts and all related styles */
+
+        .password-wrapper {
+            position: relative;
+        }
+        .password-wrapper input {
+            padding-right: 45px;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+        }
+        .password-toggle:hover {
+            color: #2c3e50;
+        }
+
+        /* ============================================
+           CHATBOT STYLES
+           ============================================ */
+        .chatbot-btn {
+            position: relative;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(230,126,34,0.4);
+            transition: all 0.3s ease;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chatbot-actions {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .app-install-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            min-width: 132px;
+            height: 48px;
+            padding: 0 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            color: #c65a0a;
+            box-shadow: 0 5px 18px rgba(0,0,0,0.16);
+            cursor: pointer;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .app-install-btn[hidden] { display: none; }
+        .app-install-btn:hover { transform: translateY(-2px); background: #fff8f0; box-shadow: 0 8px 22px rgba(0,0,0,0.2); }
+        .app-install-btn:focus-visible { outline: 3px solid #e67e22; outline-offset: 3px; }
+        .app-install-btn i { font-size: 17px; }
+        .chatbot-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 40px rgba(230,126,34,0.6);
+        }
+        .chatbot-btn .notification-dot {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 15px;
+            height: 15px;
+            background: #e74c3c;
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            max-width: 92vw;
+            max-height: 550px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+        .chatbot-window.open { display: flex; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .chatbot-header {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .chatbot-header .header-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chatbot-header .header-info .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .chatbot-header .header-info .status {
+            font-size: 11px;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .chatbot-header .header-info .status .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2ecc71;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+        .chatbot-header .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .chatbot-header .close-btn:hover { background: rgba(255,255,255,0.15); }
+
+        .chatbot-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            max-height: 380px;
+            background: #f8f9fa;
+        }
+        .chatbot-messages::-webkit-scrollbar {
+            width: 5px;
+        }
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: #e67e22;
+            border-radius: 10px;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            display: flex;
+            animation: fadeInMsg 0.3s ease;
+        }
+        @keyframes fadeInMsg {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .message.user {
+            justify-content: flex-end;
+        }
+        .message.bot {
+            justify-content: flex-start;
+        }
+        .message .bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 14px;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+        .message.user .bubble {
+            background: #e67e22;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+        .message.bot .bubble {
+            background: white;
+            color: #2c3e50;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .message.bot .bubble .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .message.bot .bubble .quick-replies button {
+            padding: 6px 14px;
+            border: 1px solid #e67e22;
+            background: white;
+            color: #e67e22;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s;
+        }
+        .message.bot .bubble .quick-replies button:hover {
+            background: #e67e22;
+            color: white;
+        }
+        .message .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 5px 0;
+        }
+        .message .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #bdc3c7;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+        .message .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .message .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        .chatbot-input {
+            display: flex;
+            padding: 12px 16px;
+            border-top: 1px solid #eef2f5;
+            background: white;
+            flex-shrink: 0;
+            gap: 10px;
+        }
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 40px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        .chatbot-input input:focus {
+            border-color: #e67e22;
+        }
+        .chatbot-input input::placeholder {
+            color: #bdc3c7;
+        }
+        .chatbot-input .send-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #e67e22, #d35400);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chatbot-input .send-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(230,126,34,0.3);
+        }
+        .chatbot-input .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Chatbot responsive */
+        @media (max-width: 500px) {
+            .chatbot-window {
+                bottom: 80px;
+                right: 10px;
+                width: 95vw;
+                max-height: 80vh;
+                border-radius: 16px;
+            }
+            .chatbot-actions { right: 14px; bottom: 20px; gap: 7px; }
+            .app-install-btn { min-width: 124px; height: 44px; padding: 0 11px; }
+            .chatbot-btn {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+            .chatbot-messages { max-height: 55vh; }
+        }
+
+        @media (max-width: 500px) {
+            body { align-items: flex-start; padding: 16px 12px; }
+            .login-container { padding: 24px 18px; margin: auto 0; border-radius: 22px; }
+            .logo-section { margin-bottom: 22px; }
+            .logo-section h1 { font-size: 24px; }
+            .logo-icon { font-size: 50px; }
+            .input-group input, .input-group textarea { font-size: 16px; }
+            .auth-btn { min-height: 48px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-section">
+            <span class="logo-icon">🏍️</span>
+            <h1>Co_vid <span class="brand-name">20's</span></h1>
+            <p>Motor Parts &amp; Accessories</p>
+        </div>
+
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="switchTab('login')">Login</button>
+            <button class="auth-tab" onclick="switchTab('register')">Register</button>
+        </div>
+
+        <div id="messageDiv"></div>
+
+        <!-- LOGIN FORM -->
+        <div id="loginForm">
+            <div class="input-group">
+                <label>Username or Email</label>
+                <input type="text" id="loginUsername" placeholder="Enter username or email" autocomplete="username">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password">
+                    <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button class="auth-btn" onclick="loginUser()">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+        </div>
+
+        <!-- REGISTER FORM -->
+        <div id="registerForm" style="display: none;">
+            <div class="input-group">
+                <label>Full Name <span class="required">*</span></label>
+                <input type="text" id="regFullname" placeholder="Enter full name">
+            </div>
+            <div class="input-group">
+                <label>Username <span class="required">*</span></label>
+                <input type="text" id="regUsername" placeholder="Choose username">
+            </div>
+            <div class="input-group">
+                <label>Email Address <span class="required">*</span></label>
+                <input type="email" id="regEmail" placeholder="Enter email">
+            </div>
+            <div class="input-group">
+                <label>Phone Number</label>
+                <input type="tel" id="regPhone" placeholder="Phone number (optional)">
+            </div>
+            <div class="input-group">
+                <label>Delivery Address</label>
+                <textarea id="regAddress" rows="2" placeholder="Delivery address (optional)"></textarea>
+            </div>
+            <div class="input-group">
+                <label>Password <span class="required">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="regPassword" placeholder="Create password">
+                    <button type="button" class="password-toggle" onclick="togglePassword('regPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <small>Minimum 6 characters</small>
+            </div>
+            <div class="input-group">
+                <label>Confirm Password <span class="required">*</span></label>
+                <div class="password-wrapper">
+                    <input type="password" id="regConfirmPassword" placeholder="Confirm password">
+                    <button type="button" class="password-toggle" onclick="togglePassword('regConfirmPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+            </div>
+            <button class="auth-btn" onclick="registerUser()">
+                <i class="fas fa-user-plus"></i> Create Account
+            </button>
+        </div>
+
+        <!-- Demo accounts section completely removed -->
+    </div>
+
+    <!-- ============================================
+         CHATBOT
+         ============================================ -->
+    <div class="chatbot-actions" aria-label="Assistant and app installation">
+        <button class="app-install-btn" id="installAppButton" type="button" aria-label="Install Co_vid 20's Motors app" title="Install app">
+            <i class="fas fa-mobile-screen-button" aria-hidden="true"></i>
+            <span>Install app</span>
+        </button>
+        <button class="chatbot-btn" id="chatbotToggle" aria-label="Chat with us">
+            💬
+            <span class="notification-dot"></span>
+        </button>
+    </div>
+
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <div class="header-info">
+                <div class="avatar">🤖</div>
+                <div>
+                    <div style="font-weight: 700; font-size: 16px;">Co_vid 20's Assistant</div>
+                    <div class="status">
+                        <span class="dot"></span> Online
+                    </div>
+                </div>
+            </div>
+            <button class="close-btn" onclick="toggleChatbot()">✕</button>
+        </div>
+        <div class="chatbot-messages" id="chatbotMessages">
+            <div class="message bot">
+                <div class="bubble">
+                    👋 Hello! I'm your Co_vid 20's assistant.<br>
+                    I can help you with:<br>
+                    • 🛒 Browsing products<br>
+                    • 🛍️ Adding items to cart<br>
+                    • 💳 Placing orders<br>
+                    • 💰 Payment methods<br>
+                    • 📦 Order tracking<br>
+                    • ❓ And more!
+                    <div class="quick-replies">
+                        <button onclick="sendQuickReply('How do I buy a product?')">🛒 How to buy?</button>
+                        <button onclick="sendQuickReply('What payment methods are available?')">💳 Payments</button>
+                        <button onclick="sendQuickReply('How do I check my orders?')">📦 My Orders</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-input">
+            <input type="text" id="chatbotInput" placeholder="Type your question..." onkeypress="if(event.key==='Enter') sendMessage()">
+            <button class="send-btn" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script src="app-install.js" defer></script>
+    <script>
+        // =============================================
+        // CHATBOT KNOWLEDGE BASE
+        // =============================================
+        const chatbotKnowledge = {
+            // Greetings
+            'hello': "Hello! 👋 Welcome to Co_vid 20's Motor Parts! How can I help you today?",
+            'hi': "Hi there! 👋 I'm here to help you shop for motorcycle parts. What do you need?",
+            'hey': "Hey! 👋 How can I assist you with your motorcycle parts needs?",
+            'good morning': "Good morning! ☀️ How can I help you shop today?",
+            'good afternoon': "Good afternoon! 🌤️ What motorcycle parts are you looking for?",
+            'good evening': "Good evening! 🌙 I'm here to help you find the right parts.",
+            
+            // How to use website
+            'how to use': "Here's how to use our website: 🛒 Browse products → Add to cart → Checkout → Choose payment → Place order. Need help with any step?",
+            'how to buy': "To buy a product: 🔍 Search or browse products → Select quantity → Click 'Add to Cart' → View cart → Click 'Place Order' → Fill delivery info → Choose payment → Confirm order!",
+            'how to order': "Ordering is easy! 📝 1. Find your product 2. Add to cart 3. Checkout 4. Enter delivery details 5. Select payment 6. Place order!",
+            'how to shop': "Shopping guide: 🛍️ Browse categories → Use search bar → Check product details → Add to cart → Complete checkout. Simple!",
+            'how does it work': "Our website works like this: Products → Cart → Checkout → Payment → Delivery. Everything is streamlined for your convenience!",
+            
+            // Products
+            'products': "We offer a wide range of motorcycle parts! 🔧 Engine parts, ⚡ Electrical components, 🛑 Brakes, 🛞 Tires, 🎨 Accessories, and more. What are you looking for?",
+            'what products': "Our inventory includes: Engine Parts, Electrical Parts, Brakes, Accessories, Tires, Lubricants, Drive Train parts, and Tools. Browse the categories above!",
+            'parts': "We stock quality motorcycle parts from trusted brands. 🏍️ Check our product categories or use the search bar to find specific parts.",
+            
+            // Cart
+            'cart': "Your cart holds all items you want to buy. 🛒 Click the cart icon (🛒) on the top right to view, update quantities, or remove items.",
+            'add to cart': "To add to cart: 🛍️ Select product → Choose quantity → Click 'Add to Cart' button. The cart badge will update with your items!",
+            'remove from cart': "To remove items: 🛒 Open your cart → Click the ❌ (remove) button next to any item. You can also clear the entire cart.",
+            'clear cart': "To clear your cart: 🛒 Open cart → Click 'Clear Cart' button → Confirm. All items will be removed.",
+            
+            // Checkout & Delivery
+            'checkout': "Checkout is where you place your order. 📝 Click the cart icon → Review items → Click 'Place Order' → Fill delivery info → Choose payment → Confirm!",
+            'delivery': "We deliver to addresses in the Philippines! 📦 Enter your complete address, city, province, and zip code during checkout. Delivery takes 2-5 business days.",
+            'shipping': "Shipping is available nationwide! 🚚 Enter your delivery address during checkout. Delivery fees depend on your location.",
+            'address': "Please provide your complete address: 🏠 House number/Street, Barangay, City/Municipality, Province, and Zip Code. Add landmarks if needed.",
+            
+            // Payment
+            'payment': "We accept multiple payment methods: 💵 Cash on Delivery, 📱 GCash, 🏦 Bank Transfer (Landbank, Metrobank, BDO, BPI), and 💳 Card Payment.",
+            'payment methods': "Available payment options: 💵 Cash on Delivery (COD), 📱 GCash (via QR code), 🏦 Bank Transfer, and 💳 Card Payment (Visa, Mastercard, Amex, JCB).",
+            'gcash': "Pay via GCash: 📱 Scan the QR code → Enter the exact amount → Add your Order Number → Send. Then click 'Place Order' to confirm!",
+            'bank transfer': "Bank Transfer: Choose your bank (Landbank, Metrobank, BDO, BPI) → Transfer the exact amount → Use Order Number as reference → Click 'Place Order'.",
+            'cod': "Cash on Delivery: 💵 Pay when your order arrives. No need to pay online! Just have your cash ready upon delivery.",
+            'credit card': "Card Payment: 💳 Enter your card number, expiry date, CVV, and cardholder name. Your payment is secure and encrypted.",
+            
+            // Orders
+            'orders': "To view your orders: 👤 Click your account name → 'My Orders'. You'll see your order history, status, and tracking info.",
+            'my orders': "Your orders can be viewed in your account menu. 👤 Click the user icon → 'My Orders' to see all your past and current orders.",
+            'order status': "Order statuses: Pending → Confirmed → Processing → Shipped → Completed. Check 'My Orders' for updates on your delivery!",
+            'track order': "Track your order: 📦 Go to 'My Orders' → Select your order → See the status. You'll receive updates via email too.",
+            
+            // Account
+            'account': "Manage your account: 👤 Click the user icon → View Profile (see your details), My Orders (see orders), or Logout.",
+            'profile': "Your profile shows your account details: 👤 Name, Email, Phone, and Address. Update your info anytime.",
+            'login': "Login: 🔐 Enter your username/email and password on the login page. New user? Click 'Register' to create an account.",
+            'register': "Register: 📝 Fill in Full Name, Username, Email, and Password (min 6 characters). Click 'Create Account' to join!",
+            'logout': "Logout: 👤 Click the user icon → Select 'Logout' to sign out of your account.",
+            
+            // Help
+            'help': "I'm here to help! 🤖 Ask me about: Products, Shopping, Cart, Checkout, Payment, Delivery, Orders, or Account. What do you need?",
+            'support': "Need support? 📧 Email: support@covid20smotors.com | 📞 Phone: 0912-345-6789. I'm also here to help!",
+            'contact': "Contact us: 📞 0912-345-6789 | 📧 support@covid20smotors.com. We're happy to assist you!",
+            
+            // Default responses
+            'default': "I'm not sure about that. 🤔 Here are things I can help with:\n• Products & Shopping\n• Cart & Checkout\n• Payment Methods\n• Delivery & Orders\n• Account Help\n• Contact Support\nJust ask!"
+        };
+
+        // =============================================
+        // CHATBOT FUNCTIONS
+        // =============================================
+        function toggleChatbot() {
+            const window = document.getElementById('chatbotWindow');
+            window.classList.toggle('open');
+            if (window.classList.contains('open')) {
+                document.getElementById('chatbotInput').focus();
+            }
+        }
+
+        function getBotResponse(input) {
+            input = input.toLowerCase().trim();
+            
+            // Check for exact matches
+            for (const [key, response] of Object.entries(chatbotKnowledge)) {
+                if (input.includes(key)) {
+                    return response;
+                }
+            }
+            
+            // Check for keywords
+            const keywords = [
+                { words: ['product', 'parts', 'item', 'stock', 'available'], response: chatbotKnowledge['products'] },
+                { words: ['buy', 'purchase', 'order', 'shop', 'shopping'], response: chatbotKnowledge['how to buy'] },
+                { words: ['cart', 'basket', 'add', 'remove', 'clear'], response: chatbotKnowledge['cart'] },
+                { words: ['checkout', 'place order', 'confirm'], response: chatbotKnowledge['checkout'] },
+                { words: ['delivery', 'shipping', 'ship', 'deliver', 'address'], response: chatbotKnowledge['delivery'] },
+                { words: ['pay', 'payment', 'cash', 'gcash', 'bank', 'card', 'credit'], response: chatbotKnowledge['payment'] },
+                { words: ['order', 'track', 'status', 'history'], response: chatbotKnowledge['orders'] },
+                { words: ['account', 'profile', 'login', 'register', 'logout', 'sign'], response: chatbotKnowledge['account'] },
+                { words: ['help', 'support', 'contact', 'assist'], response: chatbotKnowledge['help'] }
+            ];
+            
+            for (const keyword of keywords) {
+                for (const word of keyword.words) {
+                    if (input.includes(word)) {
+                        return keyword.response;
+                    }
+                }
+            }
+            
+            return chatbotKnowledge['default'];
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatbotInput');
+            const message = input.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // Show typing indicator
+            showTyping();
+            
+            // Process response after delay
+            setTimeout(() => {
+                removeTyping();
+                const response = getBotResponse(message);
+                addMessage(response, 'bot');
+            }, 500 + Math.random() * 500);
+        }
+
+        function sendQuickReply(message) {
+            addMessage(message, 'user');
+            showTyping();
+            setTimeout(() => {
+                removeTyping();
+                const response = getBotResponse(message);
+                addMessage(response, 'bot');
+            }, 500 + Math.random() * 500);
+        }
+
+        function addMessage(text, sender) {
+            const container = document.getElementById('chatbotMessages');
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            bubble.innerHTML = text.replace(/\n/g, '<br>');
+            
+            // Add quick replies for bot messages with specific content
+            if (sender === 'bot' && text.includes('Hello')) {
+                const replies = document.createElement('div');
+                replies.className = 'quick-replies';
+                replies.innerHTML = `
+                    <button onclick="sendQuickReply('How do I buy a product?')">🛒 How to buy?</button>
+                    <button onclick="sendQuickReply('What payment methods are available?')">💳 Payments</button>
+                    <button onclick="sendQuickReply('How do I check my orders?')">📦 My Orders</button>
+                `;
+                bubble.appendChild(replies);
+            }
+            
+            div.appendChild(bubble);
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function showTyping() {
+            const container = document.getElementById('chatbotMessages');
+            const div = document.createElement('div');
+            div.className = 'message bot';
+            div.id = 'typingIndicator';
+            div.innerHTML = `
+                <div class="bubble">
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                </div>
+            `;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.remove();
+        }
+
+        // Toggle chatbot on button click
+        document.getElementById('chatbotToggle').addEventListener('click', toggleChatbot);
+
+        // Close chatbot when clicking outside
+        document.addEventListener('click', function(e) {
+            const window = document.getElementById('chatbotWindow');
+            const btn = document.getElementById('chatbotToggle');
+            if (window.classList.contains('open') && 
+                !window.contains(e.target) && 
+                !btn.contains(e.target)) {
+                window.classList.remove('open');
+            }
+        });
+
+        // =============================================
+        // USER DATABASE (localStorage)
+        // =============================================
+        function getUsers() {
+            try {
+                const users = localStorage.getItem('registeredUsers');
+                return users ? JSON.parse(users) : {};
+            } catch(e) {
+                return {};
+            }
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('registeredUsers', JSON.stringify(users));
+        }
+
+        // =============================================
+        // TOGGLE PASSWORD VISIBILITY
+        // =============================================
+        function togglePassword(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        // =============================================
+        // SHOW MESSAGE
+        // =============================================
+        function showMessage(msg, type) {
+            const div = document.getElementById('messageDiv');
+            div.innerHTML = `<div class="${type}-msg">${msg}</div>`;
+            // Auto hide after 5 seconds
+            setTimeout(() => div.innerHTML = '', 5000);
+        }
+
+        // =============================================
+        // SWITCH TAB
+        // =============================================
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabs = document.querySelectorAll('.auth-tab');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                tabs[0].classList.add('active');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                tabs[1].classList.add('active');
+            }
+            document.getElementById('messageDiv').innerHTML = '';
+        }
+
+        // =============================================
+        // LOGIN USER
+        // =============================================
+        function loginUser() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                showMessage('Please enter username and password', 'error');
+                return;
+            }
+
+            const btn = document.querySelector('.auth-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            btn.disabled = true;
+
+            fetch('../api_login.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.user) {
+                    const userData = {
+                        ...data.user,
+                        username: data.user.username || username
+                    };
+                    localStorage.setItem('shopUser', JSON.stringify(userData));
+                    showMessage('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'shop.html';
+                    }, 800);
+                    return;
+                }
+
+                showMessage(data.message || 'Invalid credentials. Please check your username and password.', 'error');
+            })
+            .catch(error => {
+                console.error('Login error:', error);
+                showMessage('Connection error. Please try again.', 'error');
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        }
+
+        // =============================================
+        // REGISTER USER
+        // =============================================
+        function registerUser() {
+            const fullname = document.getElementById('regFullname').value.trim();
+            const username = document.getElementById('regUsername').value.trim().toLowerCase();
+            const email = document.getElementById('regEmail').value.trim();
+            const phone = document.getElementById('regPhone').value.trim();
+            const address = document.getElementById('regAddress').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirmPassword').value;
+
+            // Validation
+            if (!fullname || !username || !email || !password) {
+                showMessage('Please fill all required fields (*)', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            if (password !== confirm) {
+                showMessage('Passwords do not match', 'error');
+                return;
+            }
+
+            const btn = document.querySelector('.auth-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Registering...';
+            btn.disabled = true;
+
+            fetch('../api_register.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    fullname, 
+                    username, 
+                    email, 
+                    phone, 
+                    address, 
+                    password 
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.user) {
+                    // Auto-login the newly registered user
+                    const userData = {
+                        ...data.user,
+                        username: data.user.username || username
+                    };
+                    localStorage.setItem('shopUser', JSON.stringify(userData));
+                    showMessage('✅ Registration successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'shop.html';
+                    }, 1500);
+                } else if (data.success) {
+                    // Fallback if no user data is returned
+                    showMessage('✅ Registration successful! Please login.', 'success');
+                    
+                    // Clear form
+                    document.getElementById('regFullname').value = '';
+                    document.getElementById('regUsername').value = '';
+                    document.getElementById('regEmail').value = '';
+                    document.getElementById('regPhone').value = '';
+                    document.getElementById('regAddress').value = '';
+                    document.getElementById('regPassword').value = '';
+                    document.getElementById('regConfirmPassword').value = '';
+                    
+                    // Switch to login tab
+                    setTimeout(() => switchTab('login'), 1500);
+                } else {
+                    showMessage(data.message || 'Registration failed', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Registration error:', error);
+                showMessage('Connection error. Please try again.', 'error');
+            })
+            .finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
+        }
+
+        // =============================================
+        // ENTER KEY SUPPORT
+        // =============================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const loginForm = document.getElementById('loginForm');
+                if (loginForm.style.display !== 'none') {
+                    loginUser();
+                } else {
+                    registerUser();
+                }
+            }
+        });
+
+        // =============================================
+        // CHECK IF ALREADY LOGGED IN
+        // =============================================
+        const savedUser = localStorage.getItem('shopUser');
+        if (savedUser) {
+            try {
+                const user = JSON.parse(savedUser);
+                if (user && user.id) {
+                    window.location.href = 'shop.html';
+                }
+            } catch(e) {
+                localStorage.removeItem('shopUser');
+            }
+        }
+
+        // =============================================
+        // INITIALIZE
+        // =============================================
+        console.log('✅ Login system ready!');
+        console.log('📋 Registered users:', Object.keys(getUsers()));
+        console.log('📝 Register a new account to create your own!');
+    </script>
+</body>
+</html>

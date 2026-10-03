@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Co_vid 20's Motor Parts</title>
+    <meta name="theme-color" content="#c65a0a">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span class="logo-icon">🏍️</span>
+                <div>
+                    <h1>Co_vid 20's</h1>
+                    <p>Motor Parts & Accessories</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="cart-icon" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cartCount" class="cart-badge">0</span>
+                </div>
+                <div class="user-menu-container">
+                    <div class="user-icon" onclick="toggleUserMenu()">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userName">Account</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div id="userDropdown" class="user-dropdown">
+                        <div id="guestMenu">
+                            <a href="#" onclick="showLoginModal()">Login</a>
+                            <a href="#" onclick="showRegisterModal()">Register</a>
+                        </div>
+                        <div id="userMenu" style="display: none;">
+                            <div class="user-welcome">Welcome, <span id="welcomeName"></span></div>
+                            <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                            <a href="orders.html"><i class="fas fa-shopping-bag"></i> My Orders</a>
+                            <a href="cart.html"><i class="fas fa-shopping-cart"></i> My Cart</a>
+                            <hr>
+                            <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="checkout-container">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:15px; flex-wrap:wrap; margin-bottom:20px;">
+            <h1>Checkout</h1>
+            <button class="btn-primary" style="background:#7f8c8d; padding:10px 20px;" onclick="window.location.href='cart.html'"><i class="fas fa-arrow-left"></i> Back to Cart</button>
+        </div>
+        
+        <div class="checkout-grid">
+            <div class="checkout-form">
+                <div class="form-section">
+                    <h3>Shipping Information</h3>
+                    <input type="text" id="fullName" placeholder="Full Name" class="form-control">
+                    <input type="email" id="email" placeholder="Email Address" class="form-control">
+                    <input type="tel" id="phone" placeholder="Phone Number" class="form-control">
+                    <textarea id="address" rows="3" placeholder="Delivery Address" class="form-control"></textarea>
+                </div>
+                
+                <div class="form-section">
+                    <h3>Payment Method</h3>
+                    <div class="payment-options">
+                        <label class="payment-option" onclick="selectPayment('cod')">
+                            <input type="radio" name="payment" value="cod" checked>
+                            <span class="payment-icon">💵</span>
+                            <div>
+                                <strong>Cash on Delivery</strong>
+                                <small>Pay when you receive</small>
+                            </div>
+                        </label>
+                        <label class="payment-option" onclick="selectPayment('gcash')">
+                            <input type="radio" name="payment" value="gcash">
+                            <span class="payment-icon">📱</span>
+                            <div>
+                                <strong>GCash</strong>
+                                <small>Pay via GCash</small>
+                            </div>
+                        </label>
+                        <label class="payment-option" onclick="selectPayment('bank')">
+                            <input type="radio" name="payment" value="bank">
+                            <span class="payment-icon">🏦</span>
+                            <div>
+                                <strong>Bank Transfer</strong>
+                                <small>Pay directly by bank transaction</small>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div id="gcashDetails" class="payment-details" style="display: none;">
+                        <div class="gcash-info">
+                            <p><strong>GCash Number:</strong> 0912-345-6789</p>
+                            <p><strong>Account Name:</strong> Co_vid 20's Motors</p>
+                            <input type="text" id="gcashRef" placeholder="Enter GCash Reference Number" class="form-control">
+                            <label for="gcashReceiptInput" style="display:block; margin-top:8px; font-size:12px; font-weight:600;">Upload GCash proof of payment</label>
+                            <input type="file" id="gcashReceiptInput" accept="image/*" class="form-control">
+                            <small style="display:block; margin-top:4px; color:#6c757d;">Required image, maximum 5 MB.</small>
+                        </div>
+                    </div>
+                    <div id="bankDetails" class="payment-details" style="display: none;">
+                        <div class="bank-info">
+                            <p><strong>Bank Name:</strong> BDO / BPI</p>
+                            <p><strong>Account Name:</strong> Co_vid 20's Motors</p>
+                            <p><strong>Account Number:</strong> 1234-5678-9012</p>
+                            <input type="text" id="bankRef" placeholder="Enter Bank Transaction Reference" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-summary">
+                <h3>Order Summary</h3>
+                <div id="orderItems"></div>
+                <div class="summary-line">
+                    <span>Subtotal:</span>
+                    <span id="checkoutSubtotal">₱0</span>
+                </div>
+                <div class="summary-line">
+                    <span>Shipping:</span>
+                    <span>₱50</span>
+                </div>
+                <div class="summary-line total">
+                    <span>Total:</span>
+                    <span id="checkoutTotal">₱0</span>
+                </div>
+                <button class="place-order-btn" onclick="placeOrder()">Place Order</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4>Co_vid 20's Motor Parts</h4>
+                <p>Quality motorcycle parts since 2020</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <a href="shop.html">Shop</a>
+                <a href="orders.html">My Orders</a>
+                <a href="cart.html">Cart</a>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-phone"></i> 0912-345-6789</p>
+                <p><i class="fas fa-envelope"></i> support@covid20smotors.com</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Co_vid 20's Motor Parts. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div class="success-icon">✅</div>
+            <h2>Order Placed Successfully!</h2>
+            <p id="successMessage"></p>
+            <p><strong>Order ID: <span id="orderId"></span></strong></p>
+            <button onclick="window.location.href='orders.html'">View My Orders</button>
+            <button onclick="window.location.href='shop.html'">Continue Shopping</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/cart.js"></script>
+    <script>
+        let selectedPayment = 'cod';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartCount();
+            loadCurrentUser();
+            loadOrderSummary();
+            loadUserInfo();
+        });
+
+        function loadOrderSummary() {
+            const cart = getCart();
+            const container = document.getElementById('orderItems');
+            
+            if (!cart || cart.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+            
+            container.innerHTML = cart.map(item => `
+                <div class="order-item">
+                    <span>${escapeHtml(item.name)} x${item.quantity}</span>
+                    <span>₱${(item.price * item.quantity).toLocaleString()}</span>
+                </div>
+            `).join('');
+            
+            const subtotal = getCartTotal();
+            const total = subtotal + 50;
+            document.getElementById('checkoutSubtotal').innerHTML = `₱${subtotal.toLocaleString()}`;
+            document.getElementById('checkoutTotal').innerHTML = `₱${total.toLocaleString()}`;
+        }
+
+        function loadUserInfo() {
+            if (currentUser) {
+                document.getElementById('fullName').value = currentUser.fullname || '';
+                document.getElementById('email').value = currentUser.email || '';
+                document.getElementById('phone').value = currentUser.phone || '';
+                document.getElementById('address').value = currentUser.address || '';
+            }
+        }
+
+        function selectPayment(method) {
+            selectedPayment = method;
+            const gcashDetails = document.getElementById('gcashDetails');
+            const bankDetails = document.getElementById('bankDetails');
+            gcashDetails.style.display = method === 'gcash' ? 'block' : 'none';
+            bankDetails.style.display = method === 'bank' ? 'block' : 'none';
+        }
+
+        async function placeOrder() {
+            if (!currentUser) {
+                showToast('Please login to place order', true);
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            const fullName = document.getElementById('fullName').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            
+            if (!fullName || !email || !phone || !address) {
+                showToast('Please fill all shipping information', true);
+                return;
+            }
+            
+            if (selectedPayment === 'gcash') {
+                const ref = document.getElementById('gcashRef').value;
+                if (!ref) {
+                    showToast('Please enter GCash reference number', true);
+                    return;
+                }
+                const receiptFile = document.getElementById('gcashReceiptInput').files[0];
+                if (!receiptFile || !receiptFile.type.startsWith('image/') || receiptFile.size > 5 * 1024 * 1024) {
+                    showToast('Please upload an image proof of payment no larger than 5 MB', true);
+                    return;
+                }
+            }
+
+            if (selectedPayment === 'bank') {
+                const ref = document.getElementById('bankRef').value;
+                if (!ref) {
+                    showToast('Please enter bank transaction reference number', true);
+                    return;
+                }
+            }
+            
+            const cart = getCart();
+            if (!cart || cart.length === 0) {
+                showToast('Your cart is empty', true);
+                return;
+            }
+
+            const apiCart = cart.map(item => ({
+                product_id: item.product_id || item.id,
+                name: item.name,
+                price: parseFloat(item.price || 0),
+                quantity: parseInt(item.quantity || 1, 10)
+            }));
+            const paymentMethod = selectedPayment === 'cod' ? 'cash' : selectedPayment === 'bank' ? 'bank_transfer' : 'gcash';
+            let gcashInfo = null;
+            if (selectedPayment === 'gcash') {
+                const receiptFile = document.getElementById('gcashReceiptInput').files[0];
+                const receiptData = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(new Error('Unable to read receipt image'));
+                    reader.readAsDataURL(receiptFile);
+                });
+                gcashInfo = {
+                    number: '0912-345-6789',
+                    display: '0912-345-6789',
+                    name: "Co_vid 20's Motors",
+                    receipt_data: receiptData,
+                    receipt_name: receiptFile.name,
+                    reference: document.getElementById('gcashRef').value
+                };
+            }
+
+            const orderButton = document.querySelector('.place-order-btn');
+            if (orderButton) {
+                orderButton.disabled = true;
+                orderButton.textContent = 'Processing...';
+            }
+
+            let data;
+            try {
+                const response = await fetch('api_place_order.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: currentUser.id,
+                        cart: apiCart,
+                        address,
+                        payment_method: paymentMethod,
+                        gcash_info: gcashInfo,
+                        delivery_info: { fullname: fullName, email, phone }
+                    })
+                });
+                data = await response.json();
+            } catch (error) {
+                console.error('Place order error:', error);
+                showToast('Connection error. Your order was not recorded.', true);
+                if (orderButton) {
+                    orderButton.disabled = false;
+                    orderButton.textContent = 'Place Order';
+                }
+                return;
+            }
+
+            if (!data.success) {
+                showToast(data.message || 'Unable to place order', true);
+                if (orderButton) {
+                    orderButton.disabled = false;
+                    orderButton.textContent = 'Place Order';
+                }
+                return;
+            }
+
+            const total = getCartTotal() + 50;
+            localStorage.removeItem('cart');
+            updateCartCount();
+            
+            let message = '';
+            if (selectedPayment === 'cod') {
+                message = `Your order has been placed! Pay ₱${total.toLocaleString()} when you receive the items.`;
+            } else if (selectedPayment === 'gcash') {
+                message = `Payment of ₱${total.toLocaleString()} via GCash will be verified. Reference: ${document.getElementById('gcashRef').value}`;
+            } else {
+                message = `Payment of ₱${total.toLocaleString()} via bank transfer will be verified. Reference: ${document.getElementById('bankRef').value}`;
+            }
+            
+            document.getElementById('orderId').innerText = data.order_number;
+            document.getElementById('successMessage').innerHTML = message;
+            document.getElementById('successModal').style.display = 'flex';
+        }
+
+        function getCart() {
+            const stored = localStorage.getItem('cart');
+            return stored ? JSON.parse(stored) : [];
+        }
+
+        function getCartTotal() {
+            const cart = getCart();
+            return cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        }
+    </script>
+</body>
+</html>

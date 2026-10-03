@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+<h1>COVID20 Motors - File Structure Fixed!</h1>
+<p>Root directory: <?php echo __DIR__; ?></p>
+<p>PHP Version: <?php echo phpversion(); ?></p>
+<?php
+$host = 'localhost';
+$dbname = 'covid20_motors';
+$username = 'root';
+$password = '';
+
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
+    echo "<p style='color:green'>✓ Database connected successfully!</p>";
+} catch(PDOException $e) {
+    echo "<p style='color:red'>✗ Database error: " . $e->getMessage() . "</p>";
+}
+?>
+</body>
+</html>
